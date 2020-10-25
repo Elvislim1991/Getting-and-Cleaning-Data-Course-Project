@@ -4,22 +4,22 @@ library(dplyr)
 
 clean_data <- function(X, y, feature, activity.labels, subject) {
         
-        # Load test set data in environment 
-        test.set <- read_table(X, col_names = FALSE)
+        # Load data set in environment 
+        data <- read_table(X, col_names = FALSE)
         
-        # Load test labels into environment
-        test.labels <- read_table(y, col_names = "activity.label")
+        # Load labels into environment
+        labels <- read_table(y, col_names = "activity.label")
         
         # Load feature names into environment
         feature.names <- readLines(feature)
-        feature.names <- gsub("[0-9]+ ", "", feature.names) # remove the leading characters and space for variable names
+        feature.names <- gsub("[0-9]+ ", "", feature.names) # remove the leading integer and space for variable names
         feature.names.filter <- feature.names[grepl("\\bmean()\\b|\\bstd()\\b", feature.names)] # filter the variables with mean and std
         
         # names the column with descriptive variable names
-        names(test.set) <- feature.names
+        names(data) <- feature.names
         
         # select features with mean and std
-        test.set.mean.std <- test.set %>% select(feature.names.filter)
+        data.mean.std <- data %>% select(feature.names.filter)
         
         # load activity labels into environment
         activity.labels <- read_table(
@@ -27,18 +27,18 @@ clean_data <- function(X, y, feature, activity.labels, subject) {
                 col_names = c("activity.label", "activity")
                 )
         
-        # load test subject data into environment
-        test.subject <- read_table(
+        # load  subject data into environment
+        subject <- read_table(
                 subject, 
                 col_names = "Subject.ID"
                 )
         
-        # column bind test.set.mean.std, test.labels, and test.subject together
+        # column bind data.mean.std, labels, and subject together
         merge_tbl <- tibble(
                 cbind(
-                        test.set.mean.std, 
-                        test.labels, 
-                        test.subject
+                        data.mean.std, 
+                        labels, 
+                        subject
                         )
                 )
         

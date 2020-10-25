@@ -1,4 +1,6 @@
 # Function to merge and clean the data providing X, y, features, activity_labels, subject txt file for train and test set
+library(readr)
+library(dplyr)
 
 clean_data <- function(X, y, feature, activity.labels, subject) {
         
